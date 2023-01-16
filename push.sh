@@ -69,7 +69,7 @@ indent() { sed 's/^/  /'; }
 declare HELM3_VERSION="$(helm version --client --short | grep "v3\.")"
 
 declare REPO=$1
-declare REPO_URL="$(helm repo list | grep "^$REPO" | awk '{print $2}')/"
+declare REPO_URL="$(helm repo list | grep "^$REPO" | awk '{print $2}')"
 
 if [[ -n $HELM3_VERSION ]]; then
 declare REPO_AUTH_FILE="$HOME/.config/helm/auth.$REPO"
@@ -84,6 +84,8 @@ if [[ -z "$REPO_URL" ]]; then
     usage
     exit 1
 fi
+
+if [[ "${REPO_URL: -1}" != "/" ]]; then REPO_URL+="/"; fi;
 
 declare CMD
 declare AUTH
