@@ -69,7 +69,9 @@ indent() { sed 's/^/  /'; }
 declare HELM3_VERSION="$(helm version --client --short | grep "v3\.")"
 
 declare REPO=$1
-declare REPO_URL="$(helm repo list | grep "^$REPO" | awk '{print $2}')"
+# check jq
+jq --version > /dev/null
+declare REPO_URL="$(helm repo list --output json | jq --arg REPO "${REPO}" -r '.| map(select(.name == $REPO))| .[].url')"
 
 if [[ -n $HELM3_VERSION ]]; then
 declare REPO_AUTH_FILE="$HOME/.config/helm/auth.$REPO"
