@@ -136,7 +136,7 @@ case "$2" in
         fi
 
         echo "Pushing $CHART to repo $REPO_URL..."
-        curl -is -u "$AUTH" "$REPO_URL" --upload-file "$CHART_PACKAGE" | indent
+        curl --fail -is -u "$AUTH" "$REPO_URL" --upload-file "$CHART_PACKAGE" | indent
         echo "Done"
         ;;
 esac
